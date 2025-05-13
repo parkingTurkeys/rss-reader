@@ -16,6 +16,7 @@
             <button id = "settings">Settings</button>
                 
         </header>
+        <div id= "article-list"></div>
         <style>
             select,
             ::picker(select) {
@@ -54,11 +55,20 @@
                 transform: translateY(2.3rem);
             }
 
+
+            .article {
+                width: 70%;
+                display: inline-block;
+                margin-left: 15%;
+                padding: 2rem;
+            }
+
             /*macchiato (peach)*/
 
             body.macchiato-peach { background-color: #24273a; color: #cad3f5; }
             .macchiato-peach header *:not(svg) { background-color: #6E738D; color: #363A4F; border-color: #5B6078;}
             .macchiato-peach #feed-submit-button { background-color: #F5A97F; color: #59331E; border-color: #BF7A55 }
+            .article { background-color: #363a4f;}
 
             /* mocha (mauve) */
 
@@ -75,6 +85,13 @@
             function switchClass(event) {
                 document.getElementsByTagName("body")[0].className = this.value
             }
+
+            function renderElement(html) {
+                reuse = "<div class= 'article'>" + html + "</div>"
+                document.getElementById("article-list").innerHTML += reuse
+            }
+
+            renderElement("hello world!!!")
         </script>
     </body>
 </html>
