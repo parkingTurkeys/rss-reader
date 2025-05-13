@@ -31,7 +31,7 @@
             * { 
                 margin: 0; 
                 padding: 0; 
-                font-size: 12px;
+                font-size: 16px;
             }
             select::picker-icon {
                 color: #363A4F;
@@ -43,8 +43,8 @@
             }
             header *{ 
                 margin: 1rem;
-                font-size: 3rem;
-                height: 5rem;
+                font-size: 2rem;
+                height: 3rem;
             }
             #feed-entry-box {
                 margin-left: 2rem;
@@ -78,6 +78,11 @@
             
         </style>
         <script>
+            /*replace these with localStorage later*/
+            let rssFeeds = ["https://parkingturkeys.github.io/feed.xml"]
+            let settings = {}
+            let index = 0
+
             document.getElementsByTagName("body")[0].className = document.getElementById("theme-select-menu").value
             //make style select work
             document.getElementById("theme-select-menu").addEventListener("change", switchClass)
@@ -86,11 +91,38 @@
                 document.getElementsByTagName("body")[0].className = this.value
             }
 
+
+            function contentFromFeed(feed) {
+                xmlser = new XMLSerializer
+                articles = feed.getElementsByTagName("item")
+                for (i = 0; i < articles.length; i++) {
+                    articles[i].getElementsByTagName("description")
+                    renderElement(articles[i].getElementsByTagName("description"))
+                }
+            }
+
             function renderElement(html) {
                 reuse = "<div class= 'article'>" + html + "</div>"
                 document.getElementById("article-list").innerHTML += reuse
             }
 
+            function getFeeds(feeds){
+                if (index < feeds.length) {
+                    req = new XMLHttpRequest()
+                    req.open("GET", feeds[0])
+                    req.send()
+                    req.addEventListener("load", receiveFeeds)
+                }
+            }
+
+            function receiveFeeds(event) {
+                domparser = new DOMParser
+                contentFromFeed(domparser.parseFromString(this.response, "text/xml"))
+                index++
+                getFeeds(rssFeeds)
+            }
+
+            getFeeds(rssFeeds)
             renderElement("hello world!!!")
         </script>
     </body>
